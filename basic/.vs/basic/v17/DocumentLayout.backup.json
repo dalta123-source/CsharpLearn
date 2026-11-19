@@ -3,6 +3,26 @@
   "WorkspaceRootPath": "C:\\CSH\\CsharpLearn\\basic\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\basic.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\basic.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uBC18\uBCF5\uBB38.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uBC18\uBCF5\uBB38.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uD640\uC9DD.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uD640\uC9DD.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,15 +39,75 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
+              "RelativeDocumentMoniker": "basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
+              "RelativeToolTip": "basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-19T12:30:46.072Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "\uBC18\uBCF5\uBB38.cs",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC18\uBCF5\uBB38.cs",
+              "RelativeDocumentMoniker": "basic\\\uBC18\uBCF5\uBB38.cs",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC18\uBCF5\uBB38.cs",
+              "RelativeToolTip": "basic\\\uBC18\uBCF5\uBB38.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-19T12:04:17.985Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "\uD640\uC9DD.cs",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uD640\uC9DD.cs",
+              "RelativeDocumentMoniker": "basic\\\uD640\uC9DD.cs",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uD640\uC9DD.cs",
+              "RelativeToolTip": "basic\\\uD640\uC9DD.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-19T11:53:55.374Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "basic.csproj",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\basic.csproj",
+              "RelativeDocumentMoniker": "basic\\basic.csproj",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\basic.csproj",
+              "RelativeToolTip": "basic\\basic.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-11-19T11:11:03.183Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "\uB370\uC774\uD130\uC758\uD750\uB984.cs",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs",
+              "RelativeDocumentMoniker": "basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs",
+              "RelativeToolTip": "basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-19T11:12:29.611Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\Program.cs",
               "RelativeDocumentMoniker": "basic\\Program.cs",
-              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\Program.cs*",
-              "RelativeToolTip": "basic\\Program.cs*",
-              "ViewState": "AgIAACAAAAAAAAAAAAAgwDkAAAAzAAAAAAAAAA==",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\Program.cs",
+              "RelativeToolTip": "basic\\Program.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAEEAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-18T11:18:20.529Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-11-18T11:18:20.529Z"
             }
           ]
         }
