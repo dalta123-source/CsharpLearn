@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data.cs" />
     <Compile Remove="Program.cs" />
     <Compile Remove="데이터의흐름.cs" />
+    <Compile Remove="반복문 응용 게임.cs" />
     <Compile Remove="반복문.cs" />
+    <Compile Remove="상수열거형 예제 게임.cs" />
+    <Compile Remove="상수와 열거형.cs" />
     <Compile Remove="홀짝.cs" />
   </ItemGroup>
 

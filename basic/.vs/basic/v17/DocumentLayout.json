@@ -3,28 +3,28 @@
   "WorkspaceRootPath": "C:\\CSH\\CsharpLearn\\basic\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uC0C1\uC810\uD398\uC774\uC9C0\uAD6C\uC131.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uC0C1\uC810\uD398\uC774\uC9C0\uAD6C\uC131.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\data.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\data.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uC0C1\uC218\uC640 \uC5F4\uAC70\uD615.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uC0C1\uC218\uC640 \uC5F4\uAC70\uD615.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uBC30\uC5F4.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uBC30\uC5F4.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\basic.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\basic.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uBC18\uBCF5\uBB38.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uBC18\uBCF5\uBB38.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uD640\uC9DD.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uD640\uC9DD.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|c:\\csh\\csharplearn\\basic\\basic\\\uC0C1\uC218\uC5F4\uAC70\uD615 \uC608\uC81C \uAC8C\uC784.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5304DE22-6FE8-45FD-9F53-1CDE7DDCCAB1}|basic\\basic.csproj|solutionrelative:basic\\\uC0C1\uC218\uC5F4\uAC70\uD615 \uC608\uC81C \uAC8C\uC784.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,80 +34,85 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
-              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
-              "RelativeDocumentMoniker": "basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
-              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
-              "RelativeToolTip": "basic\\\uBC18\uBCF5\uBB38 \uC751\uC6A9 \uAC8C\uC784.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-19T12:30:46.072Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "\uBC18\uBCF5\uBB38.cs",
-              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC18\uBCF5\uBB38.cs",
-              "RelativeDocumentMoniker": "basic\\\uBC18\uBCF5\uBB38.cs",
-              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC18\uBCF5\uBB38.cs",
-              "RelativeToolTip": "basic\\\uBC18\uBCF5\uBB38.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-19T12:04:17.985Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "\uD640\uC9DD.cs",
-              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uD640\uC9DD.cs",
-              "RelativeDocumentMoniker": "basic\\\uD640\uC9DD.cs",
-              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uD640\uC9DD.cs",
-              "RelativeToolTip": "basic\\\uD640\uC9DD.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-19T11:53:55.374Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "basic.csproj",
+              "DocumentIndex": 4,
+              "Title": "basic",
               "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\basic.csproj",
               "RelativeDocumentMoniker": "basic\\basic.csproj",
               "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\basic.csproj",
               "RelativeToolTip": "basic\\basic.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-11-19T11:11:03.183Z"
+              "WhenOpened": "2026-11-20T12:28:29.435Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "\uB370\uC774\uD130\uC758\uD750\uB984.cs",
-              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs",
-              "RelativeDocumentMoniker": "basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs",
-              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs",
-              "RelativeToolTip": "basic\\\uB370\uC774\uD130\uC758\uD750\uB984.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAALAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "\uC0C1\uC810\uD398\uC774\uC9C0\uAD6C\uC131.cs",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uC0C1\uC810\uD398\uC774\uC9C0\uAD6C\uC131.cs",
+              "RelativeDocumentMoniker": "basic\\\uC0C1\uC810\uD398\uC774\uC9C0\uAD6C\uC131.cs",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uC0C1\uC810\uD398\uC774\uC9C0\uAD6C\uC131.cs",
+              "RelativeToolTip": "basic\\\uC0C1\uC810\uD398\uC774\uC9C0\uAD6C\uC131.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-19T11:12:29.611Z"
+              "WhenOpened": "2026-11-20T12:28:55.197Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "\uBC30\uC5F4.cs",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC30\uC5F4.cs",
+              "RelativeDocumentMoniker": "basic\\\uBC30\uC5F4.cs",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uBC30\uC5F4.cs",
+              "RelativeToolTip": "basic\\\uBC30\uC5F4.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB8AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-20T11:57:13.132Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\Program.cs",
-              "RelativeDocumentMoniker": "basic\\Program.cs",
-              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\Program.cs",
-              "RelativeToolTip": "basic\\Program.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAAAEEAAAAMAAAAAAAAAA==",
+              "Title": "\uC0C1\uC218\uC5F4\uAC70\uD615 \uC608\uC81C \uAC8C\uC784.cs",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uC0C1\uC218\uC5F4\uAC70\uD615 \uC608\uC81C \uAC8C\uC784.cs",
+              "RelativeDocumentMoniker": "basic\\\uC0C1\uC218\uC5F4\uAC70\uD615 \uC608\uC81C \uAC8C\uC784.cs",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uC0C1\uC218\uC5F4\uAC70\uD615 \uC608\uC81C \uAC8C\uC784.cs",
+              "RelativeToolTip": "basic\\\uC0C1\uC218\uC5F4\uAC70\uD615 \uC608\uC81C \uAC8C\uC784.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-18T11:18:20.529Z"
+              "WhenOpened": "2026-11-20T11:35:21.495Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Data.cs",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\Data.cs",
+              "RelativeDocumentMoniker": "basic\\Data.cs",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\Data.cs",
+              "RelativeToolTip": "basic\\Data.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-20T11:25:16.562Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "\uC0C1\uC218\uC640 \uC5F4\uAC70\uD615.cs",
+              "DocumentMoniker": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uC0C1\uC218\uC640 \uC5F4\uAC70\uD615.cs",
+              "RelativeDocumentMoniker": "basic\\\uC0C1\uC218\uC640 \uC5F4\uAC70\uD615.cs",
+              "ToolTip": "C:\\CSH\\CsharpLearn\\basic\\basic\\\uC0C1\uC218\uC640 \uC5F4\uAC70\uD615.cs",
+              "RelativeToolTip": "basic\\\uC0C1\uC218\uC640 \uC5F4\uAC70\uD615.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACEAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-20T11:09:21.84Z",
+              "EditorCaption": ""
             }
           ]
         }
