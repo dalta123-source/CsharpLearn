@@ -1,0 +1,15 @@
+C:\CSH\CsharpLearn\basic\basicL\basicL\bin\Debug\net9.0\basicL.exe
+C:\CSH\CsharpLearn\basic\basicL\basicL\bin\Debug\net9.0\basicL.deps.json
+C:\CSH\CsharpLearn\basic\basicL\basicL\bin\Debug\net9.0\basicL.runtimeconfig.json
+C:\CSH\CsharpLearn\basic\basicL\basicL\bin\Debug\net9.0\basicL.dll
+C:\CSH\CsharpLearn\basic\basicL\basicL\bin\Debug\net9.0\basicL.pdb
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\basicL.GeneratedMSBuildEditorConfig.editorconfig
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\basicL.AssemblyInfoInputs.cache
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\basicL.AssemblyInfo.cs
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\basicL.csproj.CoreCompileInputs.cache
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\basicL.sourcelink.json
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\basicL.dll
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\refint\basicL.dll
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\basicL.pdb
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\basicL.genruntimeconfig.cache
+C:\CSH\CsharpLearn\basic\basicL\basicL\obj\Debug\net9.0\ref\basicL.dll
