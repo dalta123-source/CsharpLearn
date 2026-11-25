@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>OOP Tower Defense - Polymorphism & Observer</title>
+  <style>
+    body {
+      font-family: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #1e1e2e;
+      color: #cdd6f4;
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      margin: 0;
+    }
+    #game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    canvas {
+      background-color: #181825;
+      border: 2px solid #89b4fa;
+      border-radius: 8px;
+      cursor: crosshair;
+    }
+    #controls {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      background-color: #313244;
+      color: #cdd6f4;
+      border: 1px solid #89b4fa;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    button:hover { background-color: #45475a; }
+    button.active { background-color: #89b4fa; color: #11111b; }
+    #sidebar {
+      width: 320px;
+      background-color: #181825;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #45475a;
+    }
+    h2, h3 { margin-top: 0; color: #89b4fa; }
+    .download-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .download-btn {
+      background-color: #a6e3a1;
+      color: #11111b;
+      border: none;
+      text-align: left;
+    }
+    .download-btn:hover { background-color: #94e2d5; }
+    .legend { font-size: 0.9em; line-height: 1.6; color: #a6adc8; }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <h2>🏰 OOP 다형성 타워 디펜스</h2>
+    <canvas id="gameCanvas" width="800" height="450"></canvas>
+    <div id="controls">
+      <button id="btn-arrow" class="active" onclick="selectTower('ARROW')">🏹 ArrowTower (생물 특화)</button>
+      <button id="btn-bomber" onclick="selectTower('BOMBER')">💣 BomberTower (광역/공성저지)</button>
+      <button id="btn-electro" onclick="selectTower('ELECTRO')">⚡ ElectroTower (기계 특화/옵저버)</button>
+    </div>
+    <p>💡 캔버스 위를 클릭하여 선택한 타워를 배치하세요!</p>
+  </div>
+
+  <div id="sidebar">
+    <h3>📦 클래스 파일 다운로드</h3>
+    <p style="font-size: 0.85em;">각 클래스가 분리된 ES6 모듈(.js) 형태로 다운로드됩니다.</p>
+    <div class="download-list" id="download-buttons"></div>
+
+    <hr style="border-color: #313244; margin: 20px 0;">
+
+    <h3>📖 상성 및 메커니즘</h3>
+    <div class="legend">
+      <b>[적 유형]</b><br>
+      🟢 <b>BioEnemy (생물)</b>: 빠름, 화살에 취약(1.5x)<br>
+      ⚙️ <b>MechEnemy (기계)</b>: 단단함, 전기에 취약(2.0x), 화살 저항(0.5x)<br>
+      ⚔️ <b>빨간 테두리 적</b>: 타워를 직접 공격하는 유형 (폭탄에 1.5x 피해)<br><br>
+      <b>[옵저버 패턴]</b><br>
+      ⚡ <b>ElectroTower(IObservable)</b>는 사거리 내 진입한 적을 구독자(Observer)로 등록하고 주기적으로 전기 충격을 전파합니다.
+    </div>
+  </div>
+
+  <script id="class-definitions">
+    // ==========================================
+    // 1. Interfaces.js (인터페이스 명세)
+    // ==========================================
+    class IClockable {
+      onTick(dt) { throw new Error("IClockable.onTick() must be implemented."); }
+    }
+
+    class IAttackable {
+      takeDamage(amount, sourceTower) { throw new Error("IAttackable.takeDamage() must be implemented."); }
+    }
+
+    class IObservable {
+      addObserver(observer) { throw new Error("IObservable.addObserver() must be implemented."); }
+      removeObserver(observer) { throw new Error("IObservable.removeObserver() must be implemented."); }
+      notifyObservers(data) { throw new Error("IObservable.notifyObservers() must be implemented."); }
+    }
+
+    // ==========================================
+    // 2. Enemy.js (추상 클래스: IClockable, IAttackable 구현)
+    // ==========================================
+    class Enemy {
+      constructor(x, y, hp, speed, type, isAttackingTower) {
+        if (this.constructor === Enemy) {
+          throw new Error("추상 클래스 Enemy는 직접 인스턴스화할 수 없습니다.");
+        }
+        this.x = x;
+        this.y = y;
+        this.hp = hp;
+        this.maxHp = hp;
+        this.speed = speed;
+        this.type = type; // 'BIO' | 'MECH'
+        this.isAttackingTower = isAttackingTower; // true | false
+        this.isDead = false;
+        this.radius = 14;
+        this.shockEffect = 0;
+      }
+
+      // IClockable 구현
+      onTick(dt) {
+        if (this.isDead) return;
+        if (this.shockEffect > 0) this.shockEffect -= dt;
+        this.move(dt);
+      }
+
+      move(dt) {
+        this.x += this.speed * dt;
+        if (this.x > 820) this.isDead = true;
+      }
+
+      // IAttackable 구현 (다형적 데미지 계산)
+      takeDamage(baseDamage, sourceTower) {
+        const multiplier = this.calculateDamageMultiplier(sourceTower);
+        const finalDamage = baseDamage * multiplier;
+        this.hp -= finalDamage;
+        this.shockEffect = 0.15;
+
+        if (this.hp <= 0) {
+          this.hp = 0;
+          this.isDead = true;
+        }
+      }
+
+      calculateDamageMultiplier(sourceTower) {
+        throw new Error("calculateDamageMultiplier() must be implemented.");
+      }
+
+      // ElectroTower(IObservable)로부터 알림 수신
+      onElectroPulse(damage, tower) {
+        this.takeDamage(damage, tower);
+      }
+
+      render(ctx) {
+        if (this.isDead) return;
+        ctx.save();
+        
+        ctx.fillStyle = this.shockEffect > 0 ? "#f38ba8" : (this.type === 'BIO' ? "#a6e3a1" : "#89dceb");
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (this.isAttackingTower) {
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = "#f38ba8";
+          ctx.stroke();
+        }
+
+        const hpRatio = this.hp / this.maxHp;
+        ctx.fillStyle = "#313244";
+        ctx.fillRect(this.x - 15, this.y - 22, 30, 5);
+        ctx.fillStyle = "#a6e3a1";
+        ctx.fillRect(this.x - 15, this.y - 22, 30 * hpRatio, 5);
+
+        ctx.restore();
+      }
+    }
+
+    // ==========================================
+    // 3. ConcreteEnemies.js (구체적인 적 클래스들)
+    // ==========================================
+    class BioEnemy extends Enemy {
+      constructor(x, y, isAttackingTower = false) {
+        super(x, y, 100, 55, 'BIO', isAttackingTower);
+      }
+
+      calculateDamageMultiplier(sourceTower) {
+        let mult = 1.0;
+        if (sourceTower instanceof ArrowTower) mult *= 1.5;
+        if (sourceTower instanceof ElectroTower) mult *= 0.8;
+        if (this.isAttackingTower && sourceTower instanceof BomberTower) mult *= 1.5;
+        return mult;
+      }
+    }
+
+    class MechEnemy extends Enemy {
+      constructor(x, y, isAttackingTower = true) {
+        super(x, y, 180, 35, 'MECH', isAttackingTower);
+      }
+
+      calculateDamageMultiplier(sourceTower) {
+        let mult = 1.0;
+        if (sourceTower instanceof ArrowTower) mult *= 0.5;
+        if (sourceTower instanceof ElectroTower) mult *= 2.0;
+        if (this.isAttackingTower && sourceTower instanceof BomberTower) mult *= 1.5;
+        return mult;
+      }
+    }
+
+    // ==========================================
+    // 4. Tower.js (추상 클래스: 사거리 내 적 탐색 및 공격)
+    // ==========================================
+    class Tower {
+      constructor(x, y, range, damage, cooldown) {
+        if (this.constructor === Tower) {
+          throw new Error("추상 클래스 Tower는 직접 인스턴스화할 수 없습니다.");
+        }
+        this.x = x;
+        this.y = y;
+        this.range = range;
+        this.damage = damage;
+        this.cooldown = cooldown;
+        this.timer = 0;
+        this.lasers = [];
+      }
+
+      update(dt, enemies) {
+        this.timer -= dt;
+        this.lasers = this.lasers.filter(l => (l.life -= dt) > 0);
+
+        const targetsInRange = this.getEnemiesInRange(enemies);
+        if (targetsInRange.length > 0 && this.timer <= 0) {
+          this.attack(targetsInRange);
+          this.timer = this.cooldown;
+        }
+      }
+
+      getEnemiesInRange(enemies) {
+        return enemies.filter(enemy => {
+          if (enemy.isDead) return false;
+          const dist = Math.hypot(enemy.x - this.x, enemy.y - this.y);
+          return dist <= this.range;
+        });
+      }
+
+      attack(targets) {
+        throw new Error("Tower.attack() must be implemented by subclasses.");
+      }
+
+      render(ctx) {
+        ctx.save();
+        ctx.strokeStyle = "rgba(137, 180, 250, 0.15)";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
+        ctx.stroke();
+
+        this.lasers.forEach(l => {
+          ctx.strokeStyle = l.color;
+          ctx.lineWidth = l.width || 2;
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(l.tx, l.ty);
+          ctx.stroke();
+        });
+        ctx.restore();
+      }
+    }
+
+    // ==========================================
+    // 5. ArrowTower.js (단일 빠른 사격)
+    // ==========================================
+    class ArrowTower extends Tower {
+      constructor(x, y) {
+        super(x, y, 160, 25, 0.6);
+      }
+
+      attack(targets) {
+        const target = targets[0];
+        target.takeDamage(this.damage, this);
+        this.lasers.push({ tx: target.x, ty: target.y, color: "#a6e3a1", life: 0.15 });
+      }
+
+      render(ctx) {
+        super.render(ctx);
+        ctx.fillStyle = "#a6e3a1";
+        ctx.fillRect(this.x - 12, this.y - 12, 24, 24);
+      }
+    }
+
+    // ==========================================
+    // 6. BomberTower.js (광역 폭발 공격)
+    // ==========================================
+    class BomberTower extends Tower {
+      constructor(x, y) {
+        super(x, y, 140, 40, 1.5);
+        this.splashRadius = 65;
+      }
+
+      attack(targets) {
+        const mainTarget = targets[0];
+        targets.forEach(enemy => {
+          const dist = Math.hypot(enemy.x - mainTarget.x, enemy.y - mainTarget.y);
+          if (dist <= this.splashRadius) {
+            enemy.takeDamage(this.damage, this);
+          }
+        });
+        this.lasers.push({ tx: mainTarget.x, ty: mainTarget.y, color: "#fab387", width: 4, life: 0.25 });
+      }
+
+      render(ctx) {
+        super.render(ctx);
+        ctx.fillStyle = "#fab387";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 14, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // ==========================================
+    // 7. ElectroTower.js (IObservable 구현 - 사거리 내 적 구독 및 전격 전파)
+    // ==========================================
+    class ElectroTower extends Tower {
+      constructor(x, y) {
+        super(x, y, 130, 18, 1.0);
+        this.observers = new Set();
+        this.pulseAlpha = 0;
+      }
+
+      addObserver(observer) {
+        this.observers.add(observer);
+      }
+
+      removeObserver(observer) {
+        this.observers.delete(observer);
+      }
+
+      notifyObservers() {
+        this.observers.forEach(observer => {
+          if (!observer.isDead) {
+            observer.onElectroPulse(this.damage, this);
+          }
+        });
+      }
+
+      update(dt, enemies) {
+        if (this.pulseAlpha > 0) this.pulseAlpha -= dt * 2;
+
+        const inRange = new Set(this.getEnemiesInRange(enemies));
+        enemies.forEach(e => {
+          if (inRange.has(e) && !e.isDead) this.addObserver(e);
+          else this.removeObserver(e);
+        });
+
+        super.update(dt, enemies);
+      }
+
+      attack(targets) {
+        this.notifyObservers();
+        this.pulseAlpha = 0.6;
+      }
+
+      render(ctx) {
+        super.render(ctx);
+        if (this.pulseAlpha > 0) {
+          ctx.save();
+          ctx.fillStyle = `rgba(137, 220, 235, ${this.pulseAlpha * 0.3})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        ctx.fillStyle = "#89dceb";
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y - 15);
+        ctx.lineTo(this.x + 15, this.y + 12);
+        ctx.lineTo(this.x - 15, this.y + 12);
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+  </script>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let selectedTowerType = 'ARROW';
+    const towers = [];
+    let enemies = [];
+    let spawnTimer = 0;
+    let lastTime = performance.now();
+
+    towers.push(new ArrowTower(220, 160));
+    towers.push(new BomberTower(420, 290));
+    towers.push(new ElectroTower(620, 160));
+
+    function selectTower(type) {
+      selectedTowerType = type;
+      document.querySelectorAll('#controls button').forEach(b => b.classList.remove('active'));
+      document.getElementById(`btn-${type.toLowerCase()}`).classList.add('active');
+    }
+
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      if (y > 195 && y < 255) return;
+
+      if (selectedTowerType === 'ARROW') towers.push(new ArrowTower(x, y));
+      else if (selectedTowerType === 'BOMBER') towers.push(new BomberTower(x, y));
+      else if (selectedTowerType === 'ELECTRO') towers.push(new ElectroTower(x, y));
+    });
+
+    function update(dt) {
+      spawnTimer -= dt;
+      if (spawnTimer <= 0) {
+        const isBio = Math.random() > 0.45;
+        const isAttacking = Math.random() > 0.5;
+        const yOffset = (Math.random() - 0.5) * 20;
+        enemies.push(isBio ? new BioEnemy(0, 225 + yOffset, isAttacking) : new MechEnemy(0, 225 + yOffset, isAttacking));
+        spawnTimer = 1.2;
+      }
+
+      enemies.forEach(enemy => enemy.onTick(dt));
+      towers.forEach(tower => tower.update(dt, enemies));
+
+      enemies = enemies.filter(e => !e.isDead);
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#242436";
+      ctx.fillRect(0, 200, canvas.width, 50);
+
+      towers.forEach(tower => tower.render(ctx));
+      enemies.forEach(enemy => enemy.render(ctx));
+    }
+
+    function gameLoop(now) {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      update(dt);
+      render();
+      requestAnimationFrame(gameLoop);
+    }
+    requestAnimationFrame(gameLoop);
+
+    const classFiles = {
+      "Interfaces.js": `export class IClockable {\n  onTick(dt) { throw new Error("Not implemented"); }\n}\n\nexport class IAttackable {\n  takeDamage(amount, sourceTower) { throw new Error("Not implemented"); }\n}\n\nexport class IObservable {\n  addObserver(observer) { throw new Error("Not implemented"); }\n  removeObserver(observer) { throw new Error("Not implemented"); }\n  notifyObservers() { throw new Error("Not implemented"); }\n}`,
+      "Enemy.js": "export " + Enemy.toString(),
+      "BioEnemy.js": `import { Enemy } from './Enemy.js';\n\nexport ` + BioEnemy.toString(),
+      "MechEnemy.js": `import { Enemy } from './Enemy.js';\n\nexport ` + MechEnemy.toString(),
+      "Tower.js": "export " + Tower.toString(),
+      "ArrowTower.js": `import { Tower } from './Tower.js';\n\nexport ` + ArrowTower.toString(),
+      "BomberTower.js": `import { Tower } from './Tower.js';\n\nexport ` + BomberTower.toString(),
+      "ElectroTower.js": `import { Tower } from './Tower.js';\n\nexport ` + ElectroTower.toString()
+    };
+
+    const btnContainer = document.getElementById("download-buttons");
+    Object.entries(classFiles).forEach(([filename, code]) => {
+      const btn = document.createElement("button");
+      btn.className = "download-btn";
+      btn.textContent = `⬇️ ${filename}`;
+      btn.onclick = () => {
+        const blob = new Blob([code], { type: "text/javascript;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+      btnContainer.appendChild(btn);
+    });
+  </script>
+</body>
+</html>

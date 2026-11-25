@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스타크래프트 OOP & 실시간 게임 루프 (입력 · 갱신 · 렌더링)</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #0b0e14;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #38bdf8;
+            border-bottom: 2px solid #1e293b;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .game-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .canvas-wrapper {
+            flex: 1 1 720px;
+            background: #111827;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            padding: 10px;
+            position: relative;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 480px;
+            background-color: #161e2e;
+            border-radius: 4px;
+            cursor: crosshair;
+        }
+        .hud-panel {
+            flex: 1 1 360px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .hud-panel h2 {
+            margin: 0;
+            font-size: 1.15rem;
+            color: #f8fafc;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 8px;
+        }
+        .unit-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+        button {
+            background-color: #334155;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: all 0.15s;
+        }
+        button:hover { background-color: #475569; }
+        button.active {
+            border-color: #38bdf8;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+        }
+        button.terran { border-left: 4px solid #3b82f6; }
+        button.zerg { border-left: 4px solid #a855f7; }
+        button.protoss { border-left: 4px solid #f59e0b; }
+        button.action-btn {
+            background-color: #0284c7;
+            border-color: #0369a1;
+        }
+        button.action-btn:hover { background-color: #0369a1; }
+        button.danger-btn {
+            background-color: #dc2626;
+            border-color: #b91c1c;
+        }
+        button.danger-btn:hover { background-color: #b91c1c; }
+        button.btn-all {
+            background-color: #059669;
+            border-color: #047857;
+        }
+        button.btn-all:hover { background-color: #047857; }
+
+        .controls-guide {
+            background: #0f172a;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+        .controls-guide kbd {
+            background: #334155;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #38bdf8;
+        }
+        .log-box {
+            background: #090d16;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 10px;
+            height: 130px;
+            overflow-y: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: #34d399;
+        }
+        .download-section {
+            background-color: #1e293b;
+            padding: 18px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+        .download-section h2 {
+            margin-top: 0;
+            font-size: 1.15rem;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .code-container {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            max-height: 400px;
+            overflow: auto;
+        }
+        pre {
+            margin: 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.88rem;
+            color: #a5f3fc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎮 스타크래프트 OOP 실시간 게임 (입력 · 갱신 · 렌더링)</h1>
+
+    <div class="game-layout">
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="760" height="480"></canvas>
+        </div>
+
+        <div class="hud-panel">
+            <h2>🕹️ 유닛 선택 및 명령 (입력)</h2>
+            <div class="unit-selector" id="unitButtons"></div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                <button class="action-btn" onclick="triggerInterfaceSkill()">⚡ 특수 능력 (Interface)</button>
+                <button class="danger-btn" onclick="damageSelectedUnit()">💥 피격 테스트 (-25)</button>
+                <button class="action-btn" onclick="loadToTransport()">📦 수송선 탑승 (ITransport)</button>
+                <button class="action-btn" onclick="unloadAllTransports()">🪂 수송선 전원 하차</button>
+            </div>
+
+            <div class="controls-guide">
+                <strong>[조작 안내]</strong><br>
+                • <kbd>좌클릭</kbd> : 캔버스 내 유닛 선택 또는 이동 목표 지정<br>
+                • <kbd>W A S D</kbd> / <kbd>방향키</kbd> : 선택 유닛 실시간 이동<br>
+                • <kbd>Space</kbd> : 인터페이스 스킬 발동 (은신/버로우/채취/탐지)<br>
+                • <kbd>H</kbd> : 선택 유닛 피격 테스트 (저그 체력 / 프로토스 쉴드 자동 재생 확인)
+            </div>
+
+            <div class="log-box" id="gameLog"></div>
+        </div>
+    </div>
+
+    <div class="download-section">
+        <h2>📥 Java 객체지향(OOP) + 게임 루프(입력/갱신/렌더링) 소스 다운로드</h2>
+        <div class="btn-group" id="downloadButtons"></div>
+    </div>
+
+    <div class="code-container">
+        <pre id="codeDisplay"></pre>
+    </div>
+</div>
+
+<script>
+// ============================================================================
+// 1. JS 실시간 게임 엔진 (추상 클래스, 종족 특성, 인터페이스 다형성 + 게임 루프)
+// ============================================================================
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const logBox = document.getElementById('gameLog');
+
+function addLog(msg) {
+    const line = document.createElement('div');
+    line.textContent = `> ${msg}`;
+    logBox.appendChild(line);
+    logBox.scrollTop = logBox.scrollHeight;
+}
+
+const MoveType = { GROUND: '지상', AIR: '공중' };
+const UnitType = { BIOLOGICAL: '생체', MECHANICAL: '기계' };
+
+// 최상위 추상 클래스 Unit
+class Unit {
+    constructor(name, race, maxHp, moveType, unitType, x, y, color) {
+        if (new.target === Unit) throw new Error("Unit은 추상 클래스입니다.");
+        this.name = name;
+        this.race = race;
+        this.hp = maxHp;
+        this.maxHp = maxHp;
+        this.moveType = moveType;
+        this.unitType = unitType;
+        this.x = x;
+        this.y = y;
+        this.targetX = x;
+        this.targetY = y;
+        this.speed = 140; // px/sec
+        this.color = color;
+        this.isCloaked = false;
+        this.isBurrowed = false;
+        this.isLoaded = false;
+        this.detectRadius = 0;
+        this.gatherTimer = 0;
+    }
+
+    setTarget(x, y) {
+        if (this.isBurrowed) {
+            addLog(`[${this.name}] 버로우 상태에서는 이동할 수 없습니다! (Space로 해제)`);
+            return;
+        }
+        this.targetX = Math.max(25, Math.min(canvas.width - 25, x));
+        this.targetY = Math.max(25, Math.min(canvas.height - 25, y));
+    }
+
+    takeDamage(dmg) {
+        this.hp = Math.max(0, this.hp - dmg);
+        addLog(`[${this.name}] 피격! (-${dmg}) 체력: ${Math.ceil(this.hp)}/${this.maxHp}`);
+    }
+
+    // 갱신(Update) 단계에서 호출되는 공통 이동 및 종족 특성
+    update(dt) {
+        if (this.isLoaded) return;
+
+        // 이동 갱신
+        if (!this.isBurrowed) {
+            const dx = this.targetX - this.x;
+            const dy = this.targetY - this.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist > 2) {
+                this.x += (dx / dist) * this.speed * dt;
+                this.y += (dy / dist) * this.speed * dt;
+            }
+        }
+
+        // 자원 채취 타이머
+        if (this.gatherTimer > 0) {
+            this.gatherTimer -= dt;
+        }
+
+        // 종족별 패시브 특성 갱신 (다형성)
+        this.updateRacialTrait(dt);
+    }
+
+    updateRacialTrait(dt) {}
+
+    // 렌더링(Render) 단계
+    render(ctx, isSelected, isDetectedByEnemy) {
+        if (this.isLoaded) return;
+
+        ctx.save();
+
+        // 탐지기(IDetector) 반경 표시
+        if (this.detectRadius > 0) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.detectRadius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.08)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+            ctx.setLineDash([4, 4]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // 선택 링 표시
+        if (isSelected) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 24, 0, Math.PI * 2);
+            ctx.strokeStyle = '#22c55e';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+        }
+
+        // 은신(IClockable) 또는 버로우(IBurrowable) 반투명 처리
+        if (this.isCloaked || this.isBurrowed) {
+            ctx.globalAlpha = isDetectedByEnemy ? 0.65 : 0.3;
+        }
+
+        // 유닛 본체 그리기 (공중: 삼각형, 지상: 원형)
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        if (this.moveType === MoveType.AIR) {
+            ctx.moveTo(this.x, this.y - 16);
+            ctx.lineTo(this.x - 15, this.y + 13);
+            ctx.lineTo(this.x + 15, this.y + 13);
+            ctx.closePath();
+        } else {
+            ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
+        }
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.globalAlpha = 1.0;
+
+        // 체력바 렌더링
+        const barW = 36;
+        const barH = 5;
+        const hpRatio = this.hp / this.maxHp;
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(this.x - barW / 2, this.y - 26, barW, barH);
+        ctx.fillStyle = hpRatio > 0.4 ? '#22c55e' : '#ef4444';
+        ctx.fillRect(this.x - barW / 2, this.y - 26, barW * hpRatio, barH);
+
+        // 프로토스 쉴드바 추가 렌더링
+        if (this.maxShield !== undefined) {
+            const shRatio = this.shield / this.maxShield;
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(this.x - barW / 2, this.y - 32, barW, 4);
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(this.x - barW / 2, this.y - 32, barW * shRatio, 4);
+        }
+
+        // 이름 및 상태 텍스트
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 11px Malgun Gothic';
+        ctx.textAlign = 'center';
+        let statusTag = '';
+        if (this.isCloaked) statusTag += ' [은신]';
+        if (this.isBurrowed) statusTag += ' [버로우]';
+        if (this.gatherTimer > 0) statusTag += ' [채취중]';
+        if (this.cargo && this.cargo.length > 0) statusTag += ` [탑승:${this.cargo.length}]`;
+
+        ctx.fillText(`${this.name}${statusTag}`, this.x, this.y + 27);
+        ctx.restore();
+    }
+}
+
+// 종족별 중간 추상 클래스
+class TerranUnit extends Unit {
+    constructor(name, maxHp, moveType, unitType, x, y) {
+        super(name, 'Terran', maxHp, moveType, unitType, x, y, '#3b82f6');
+    }
+    updateRacialTrait(dt) {
+        // 테란 특성: 체력이 낮을 때 경고/수리 대기 상태
+    }
+}
+
+class ZergUnit extends Unit {
+    constructor(name, maxHp, moveType, x, y) {
+        super(name, 'Zerg', maxHp, moveType, UnitType.BIOLOGICAL, x, y, '#a855f7');
+    }
+    updateRacialTrait(dt) {
+        // 저그 고유 특성: 초당 자가 체력 재생
+        if (this.hp > 0 && this.hp < this.maxHp) {
+            this.hp = Math.min(this.maxHp, this.hp + 3.5 * dt);
+        }
+    }
+}
+
+class ProtossUnit extends Unit {
+    constructor(name, maxHp, maxShield, moveType, unitType, x, y) {
+        super(name, 'Protoss', maxHp, moveType, unitType, x, y, '#f59e0b');
+        this.shield = maxShield;
+        this.maxShield = maxShield;
+    }
+    takeDamage(dmg) {
+        if (this.shield >= dmg) {
+            this.shield -= dmg;
+        } else {
+            const rem = dmg - this.shield;
+            this.shield = 0;
+            this.hp = Math.max(0, this.hp - rem);
+        }
+        addLog(`[${this.name}] 피격! (-${dmg}) 쉴드: ${Math.ceil(this.shield)}/${this.maxShield}, 체력: ${Math.ceil(this.hp)}/${this.maxHp}`);
+    }
+    updateRacialTrait(dt) {
+        // 프로토스 고유 특성: 초당 플라즈마 쉴드 자동 재생
+        if (this.shield < this.maxShield) {
+            this.shield = Math.min(this.maxShield, this.shield + 6.0 * dt);
+        }
+    }
+}
+
+// 구체 유닛 클래스 (인터페이스 역할 플래그로 다형성 구현)
+class SCV extends TerranUnit {
+    constructor(x, y) { super('SCV', 60, MoveType.GROUND, UnitType.MECHANICAL, x, y); this.isWorker = true; }
+    gatherResources() { this.gatherTimer = 2.0; addLog('[SCV] 미네랄을 채취합니다.'); }
+}
+class Wraith extends TerranUnit {
+    constructor(x, y) { super('레이스', 120, MoveType.AIR, UnitType.MECHANICAL, x, y); this.isClockable = true; }
+    toggleCloak() { this.isCloaked = !this.isCloaked; addLog(`[레이스] 클로킹 ${this.isCloaked ? '활성화' : '해제'}`); }
+}
+class Dropship extends TerranUnit {
+    constructor(x, y) { super('드랍쉽', 150, MoveType.AIR, UnitType.MECHANICAL, x, y); this.isTransport = true; this.cargo = []; }
+}
+class ScienceVessel extends TerranUnit {
+    constructor(x, y) { super('사이언스 베슬', 200, MoveType.AIR, UnitType.MECHANICAL, x, y); this.isDetector = true; this.detectRadius = 110; }
+}
+
+class Drone extends ZergUnit {
+    constructor(x, y) { super('드론', 40, MoveType.GROUND, x, y); this.isWorker = true; this.isBurrowable = true; }
+    gatherResources() { this.gatherTimer = 2.0; addLog('[드론] 자원을 채취합니다.'); }
+    toggleBurrow() { this.isBurrowed = !this.isBurrowed; addLog(`[드론] ${this.isBurrowed ? '버로우(잠복)' : '언버로우'}`); }
+}
+class Overlord extends ZergUnit {
+    constructor(x, y) { super('오버로드', 200, MoveType.AIR, x, y); this.isDetector = true; this.detectRadius = 100; this.isTransport = true; this.cargo = []; }
+}
+class Lurker extends ZergUnit {
+    constructor(x, y) { super('러커', 125, MoveType.GROUND, x, y); this.isBurrowable = true; }
+    toggleBurrow() { this.isBurrowed = !this.isBurrowed; addLog(`[러커] ${this.isBurrowed ? '버로우 완료 (가시 공격 태세)' : '언버로우 (이동 가능)'}`); }
+}
+
+class Probe extends ProtossUnit {
+    constructor(x, y) { super('프로브', 20, 20, MoveType.GROUND, UnitType.MECHANICAL, x, y); this.isWorker = true; }
+    gatherResources() { this.gatherTimer = 2.0; addLog('[프로브] 광선으로 자원을 채취합니다.'); }
+}
+class DarkTemplar extends ProtossUnit {
+    constructor(x, y) { super('다크 템플러', 80, 40, MoveType.GROUND, UnitType.BIOLOGICAL, x, y); this.isClockable = true; this.isCloaked = true; }
+    toggleCloak() { addLog('[다크 템플러] 패시브 영구 은신 상태입니다.'); }
+}
+class Observer extends ProtossUnit {
+    constructor(x, y) { super('옵저버', 40, 20, MoveType.AIR, UnitType.MECHANICAL, x, y); this.isClockable = true; this.isCloaked = true; this.isDetector = true; this.detectRadius = 115; }
+    toggleCloak() { addLog('[옵저버] 영구 은신 정찰기입니다.'); }
+}
+class Shuttle extends ProtossUnit {
+    constructor(x, y) { super('셔틀', 80, 60, MoveType.AIR, UnitType.MECHANICAL, x, y); this.isTransport = true; this.cargo = []; }
+}
+
+// 유닛 인스턴스 생성
+const units = [
+    new SCV(90, 90), new Wraith(180, 80), new Dropship(270, 90), new ScienceVessel(360, 80),
+    new Drone(90, 230), new Overlord(190, 230), new Lurker(290, 230),
+    new Probe(90, 370), new DarkTemplar(190, 370), new Observer(290, 370), new Shuttle(390, 370)
+];
+
+let selectedUnit = units[0];
+const keysPressed = {};
+
+// UI 버튼 초기화
+const unitButtonsDiv = document.getElementById('unitButtons');
+function renderUnitButtons() {
+    unitButtonsDiv.innerHTML = '';
+    units.forEach(u => {
+        const btn = document.createElement('button');
+        btn.textContent = `${u.name} (${u.moveType})`;
+        btn.className = u.race.toLowerCase() + (selectedUnit === u ? ' active' : '');
+        btn.onclick = () => {
+            if (u.isLoaded) {
+                addLog(`[${u.name}] 현재 수송선에 탑승 중입니다. 먼저 하차시키세요.`);
+                return;
+            }
+            selectedUnit = u;
+            renderUnitButtons();
+            addLog(`[선택] ${u.name} (${u.race} / ${u.moveType} / ${u.unitType})`);
+        };
+        unitButtonsDiv.appendChild(btn);
+    });
+}
+renderUnitButtons();
+
+// ============================================================================
+// 2. 입력 (Input) 처리
+// ============================================================================
+canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const clickX = (e.clientX - rect.left) * scaleX;
+    const clickY = (e.clientY - rect.top) * scaleY;
+
+    // 클릭 위치에 유닛이 있으면 선택, 없으면 이동 명령
+    const clicked = units.find(u => !u.isLoaded && Math.hypot(u.x - clickX, u.y - clickY) <= 22);
+    if (clicked) {
+        selectedUnit = clicked;
+        renderUnitButtons();
+        addLog(`[클릭 선택] ${clicked.name}`);
+    } else if (selectedUnit) {
+        selectedUnit.setTarget(clickX, clickY);
+    }
+});
+
+window.addEventListener('keydown', (e) => {
+    keysPressed[e.key.toLowerCase()] = true;
+    if (e.code === 'Space') {
+        e.preventDefault();
+        triggerInterfaceSkill();
+    } else if (e.key.toLowerCase() === 'h') {
+        damageSelectedUnit();
+    }
+});
+
+window.addEventListener('keyup', (e) => {
+    keysPressed[e.key.toLowerCase()] = false;
+});
+
+function handleKeyboardMovement(dt) {
+    if (!selectedUnit || selectedUnit.isLoaded || selectedUnit.isBurrowed) return;
+    let vx = 0, vy = 0;
+    if (keysPressed['w'] || keysPressed['arrowup']) vy -= 1;
+    if (keysPressed['s'] || keysPressed['arrowdown']) vy += 1;
+    if (keysPressed['a'] || keysPressed['arrowleft']) vx -= 1;
+    if (keysPressed['d'] || keysPressed['arrowright']) vx += 1;
+
+    if (vx !== 0 || vy !== 0) {
+        const len = Math.hypot(vx, vy);
+        selectedUnit.x = Math.max(25, Math.min(canvas.width - 25, selectedUnit.x + (vx / len) * selectedUnit.speed * dt));
+        selectedUnit.y = Math.max(25, Math.min(canvas.height - 25, selectedUnit.y + (vy / len) * selectedUnit.speed * dt));
+        selectedUnit.targetX = selectedUnit.x;
+        selectedUnit.targetY = selectedUnit.y;
+    }
+}
+
+function triggerInterfaceSkill() {
+    if (!selectedUnit) return;
+    if (selectedUnit.isWorker) selectedUnit.gatherResources();
+    if (selectedUnit.isClockable) selectedUnit.toggleCloak();
+    if (selectedUnit.isBurrowable) selectedUnit.toggleBurrow();
+    if (selectedUnit.isDetector) addLog(`[${selectedUnit.name}] 탐지기(IDetector) 반경 내 은신 유닛을 감지 중입니다.`);
+}
+
+function damageSelectedUnit() {
+    if (!selectedUnit) return;
+    selectedUnit.takeDamage(25);
+}
+
+function loadToTransport() {
+    if (!selectedUnit || selectedUnit.moveType !== MoveType.GROUND || selectedUnit.isLoaded) {
+        addLog('탑승 가능한 지상 유닛을 먼저 선택해주세요.');
+        return;
+    }
+    const transport = units.find(u => u.isTransport);
+    if (transport) {
+        selectedUnit.isLoaded = true;
+        transport.cargo.push(selectedUnit);
+        addLog(`[ITransport] ${transport.name}에 ${selectedUnit.name} 탑승 완료!`);
+        selectedUnit = transport;
+        renderUnitButtons();
+    }
+}
+
+function unloadAllTransports() {
+    units.filter(u => u.isTransport).forEach(t => {
+        if (t.cargo.length > 0) {
+            t.cargo.forEach((passenger, idx) => {
+                passenger.isLoaded = false;
+                passenger.x = t.x + (idx - 0.5) * 30;
+                passenger.y = t.y + 35;
+                passenger.targetX = passenger.x;
+                passenger.targetY = passenger.y;
+            });
+            addLog(`[ITransport] ${t.name}에서 ${t.cargo.length}기 전원 하차 완료!`);
+            t.cargo = [];
+        }
+    });
+}
+
+// ============================================================================
+// 3. 갱신 (Update) & 4. 렌더링 (Render) 메인 게임 루프
+// ============================================================================
+let lastTime = performance.now();
+
+function update(dt) {
+    handleKeyboardMovement(dt);
+    for (const u of units) {
+        u.update(dt);
+    }
+}
+
+function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 배경 격자 그리기
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < canvas.width; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+    }
+    for (let y = 0; y < canvas.height; y += 40) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+    }
+
+    // 미네랄 자원 지대 표시
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.15)';
+    ctx.fillRect(15, 15, 70, 450);
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 12px Malgun Gothic';
+    ctx.fillText('미네랄 지대', 50, 35);
+
+    // 탐지기(IDetector) 감지 판정
+    const detectors = units.filter(u => u.isDetector && !u.isLoaded);
+
+    // 모든 유닛 다형성 렌더링
+    for (const u of units) {
+        const isDetected = detectors.some(d => d !== u && Math.hypot(d.x - u.x, d.y - u.y) <= d.detectRadius);
+        u.render(ctx, u === selectedUnit, isDetected);
+    }
+
+    // 상단 상태 HUD 오버레이
+    if (selectedUnit) {
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.fillRect(canvas.width - 250, 12, 238, 68);
+        ctx.strokeStyle = '#38bdf8';
+        ctx.strokeRect(canvas.width - 250, 12, 238, 68);
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.textAlign = 'left';
+        ctx.font = 'bold 12px Malgun Gothic';
+        ctx.fillText(`선택: ${selectedUnit.name} (${selectedUnit.race})`, canvas.width - 240, 32);
+        ctx.font = '11px Malgun Gothic';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText(`속성: ${selectedUnit.moveType} | ${selectedUnit.unitType}`, canvas.width - 240, 50);
+        const shText = selectedUnit.maxShield !== undefined ? ` | 쉴드: ${Math.ceil(selectedUnit.shield)}/${selectedUnit.maxShield}` : '';
+        ctx.fillText(`체력: ${Math.ceil(selectedUnit.hp)}/${selectedUnit.maxHp}${shText}`, canvas.width - 240, 68);
+    }
+}
+
+function gameLoop(now) {
+    const dt = Math.min(0.1, (now - lastTime) / 1000);
+    lastTime = now;
+
+    update(dt);   // 2. 갱신
+    render();     // 3. 렌더링
+
+    requestAnimationFrame(gameLoop);
+}
+
+addLog('게임 루프(입력 -> 갱신 -> 렌더링)가 시작되었습니다!');
+requestAnimationFrame(gameLoop);
+
+// ============================================================================
+// 5. Java 단일 파일(StarCraftGameOOP.java) 소스 코드 및 다운로드 기능
+// ============================================================================
+const javaCodeModules = {
+    "StarCraftGameOOP.java (통합 게임루프+OOP)": `import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// 1. 인터페이스 정의 (다형성 역할 분리)
+interface IClockable { void cloak(); void decloak(); }
+interface IDetector { void detect(List<Unit> allUnits); }
+interface ITransport { void load(Unit unit); void unloadAll(); }
+interface IWorker { void gatherResources(); void buildStructure(String name); }
+interface IBurrowable { void burrow(); void unburrow(); }
+
+enum MoveType { GROUND, AIR }
+enum UnitType { BIOLOGICAL, MECHANICAL }
+
+// 2. 최상위 추상 클래스 Unit (입력/갱신/렌더링 계약 포함)
+abstract class Unit {
+    protected String name;
+    protected double hp, maxHp;
+    protected double x, y;
+    protected MoveType moveType;
+    protected UnitType unitType;
+    protected boolean isCloaked = false;
+    protected boolean isBurrowed = false;
+
+    public Unit(String name, double maxHp, MoveType moveType, UnitType unitType, double x, double y) {
+        this.name = name;
+        this.maxHp = maxHp;
+        this.hp = maxHp;
+        this.moveType = moveType;
+        this.unitType = unitType;
+        this.x = x;
+        this.y = y;
+    }
+
+    // [입력] 이동 명령
+    public void move(double dx, double dy) {
+        if (isBurrowed) {
+            System.out.println("[" + name + "] 버로우 상태라 이동 불가!");
+            return;
+        }
+        this.x += dx;
+        this.y += dy;
+    }
+
+    public void takeDamage(double dmg) {
+        this.hp = Math.max(0, this.hp - dmg);
+    }
+
+    // [갱신] 매 프레임(틱) 상태 업데이트 (다형성)
+    public abstract void update(double deltaTime);
+
+    // [렌더링] 현재 상태 출력 (다형성)
+    public void render() {
+        System.out.printf("  %-12s | 위치:(%5.1f, %5.1f) | HP:%5.1f/%5.1f | %s/%s | 은신:%b 버로우:%b%n",
+                name, x, y, hp, maxHp, moveType, unitType, isCloaked, isBurrowed);
+    }
+}
+
+// 3. 테란 / 저그 / 프로토스 종족별 추상 클래스
+abstract class TerranUnit extends Unit {
+    public TerranUnit(String name, double maxHp, MoveType m, UnitType u, double x, double y) {
+        super(name, maxHp, m, u, x, y);
+    }
+    @Override
+    public void update(double dt) {
+        // 테란은 자동 재생 없음 (SCV 수리 / 메딕 치료 필요)
+    }
+}
+
+abstract class ZergUnit extends Unit {
+    public ZergUnit(String name, double maxHp, MoveType m, double x, double y) {
+        super(name, maxHp, m, UnitType.BIOLOGICAL, x, y);
+    }
+    @Override
+    public void update(double dt) {
+        // 저그 종족 특성: 매 틱 자가 체력 재생
+        if (hp > 0 && hp < maxHp) {
+            hp = Math.min(maxHp, hp + 2.0 * dt);
+        }
+    }
+}
+
+abstract class ProtossUnit extends Unit {
+    protected double shield, maxShield;
+    public ProtossUnit(String name, double maxHp, double maxShield, MoveType m, UnitType u, double x, double y) {
+        super(name, maxHp, m, u, x, y);
+        this.maxShield = maxShield;
+        this.shield = maxShield;
+    }
+    @Override
+    public void takeDamage(double dmg) {
+        if (shield >= dmg) shield -= dmg;
+        else {
+            double rem = dmg - shield;
+            shield = 0;
+            hp = Math.max(0, hp - rem);
+        }
+    }
+    @Override
+    public void update(double dt) {
+        // 프로토스 종족 특성: 매 틱 쉴드 자동 재생
+        if (shield < maxShield) {
+            shield = Math.min(maxShield, shield + 5.0 * dt);
+        }
+    }
+    @Override
+    public void render() {
+        System.out.printf("  %-12s | 위치:(%5.1f, %5.1f) | HP:%5.1f/%5.1f | SH:%5.1f/%5.1f | %s/%s%n",
+                name, x, y, hp, maxHp, shield, maxShield, moveType, unitType);
+    }
+}
+
+// 4. 구체 유닛 클래스
+class SCV extends TerranUnit implements IWorker {
+    public SCV(double x, double y) { super("SCV", 60, MoveType.GROUND, UnitType.MECHANICAL, x, y); }
+    @Override public void gatherResources() { System.out.println("[SCV] 자원 채취 중..."); }
+    @Override public void buildStructure(String n) { System.out.println("[SCV] " + n + " 건설!"); }
+}
+
+class Wraith extends TerranUnit implements IClockable {
+    public Wraith(double x, double y) { super("Wraith", 120, MoveType.AIR, UnitType.MECHANICAL, x, y); }
+    @Override public void cloak() { isCloaked = true; System.out.println("[Wraith] 클로킹 ON"); }
+    @Override public void decloak() { isCloaked = false; System.out.println("[Wraith] 클로킹 OFF"); }
+}
+
+class Lurker extends ZergUnit implements IBurrowable {
+    public Lurker(double x, double y) { super("Lurker", 125, MoveType.GROUND, x, y); }
+    @Override public void burrow() { isBurrowed = true; System.out.println("[Lurker] 버로우 완료!"); }
+    @Override public void unburrow() { isBurrowed = false; System.out.println("[Lurker] 언버로우!"); }
+}
+
+class Overlord extends ZergUnit implements IDetector, ITransport {
+    private List<Unit> cargo = new ArrayList<>();
+    public Overlord(double x, double y) { super("Overlord", 200, MoveType.AIR, x, y); }
+    @Override public void detect(List<Unit> units) { System.out.println("[Overlord] 주변 은신 유닛 탐지 스캔!"); }
+    @Override public void load(Unit u) { if (u.moveType == MoveType.GROUND) cargo.add(u); }
+    @Override public void unloadAll() { cargo.clear(); System.out.println("[Overlord] 전원 하차!"); }
+}
+
+class DarkTemplar extends ProtossUnit implements IClockable {
+    public DarkTemplar(double x, double y) { super("DarkTemplar", 80, 40, MoveType.GROUND, UnitType.BIOLOGICAL, x, y); isCloaked = true; }
+    @Override public void cloak() { isCloaked = true; }
+    @Override public void decloak() { System.out.println("[DarkTemplar] 영구 은신 유닛입니다."); }
+}
+
+// 5. 메인 게임 루프 (입력 -> 갱신 -> 렌더링)
+public class StarCraftGameOOP {
+    private static List<Unit> units = new ArrayList<>();
+    private static boolean isRunning = true;
+
+    public static void main(String[] args) {
+        units.add(new SCV(10, 10));
+        units.add(new Wraith(20, 15));
+        units.add(new Lurker(30, 40));
+        units.add(new Overlord(35, 45));
+        units.add(new DarkTemplar(50, 60));
+
+        // 초기 피격 테스트 (갱신 단계에서 저그 HP/프로토스 쉴드 재생 확인용)
+        for (Unit u : units) u.takeDamage(30);
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("=== 스타크래프트 OOP 게임 루프 시작 ===");
+
+        while (isRunning) {
+            // [1단계: 입력 (Input)]
+            System.out.println("\n명령 입력 [1:이동 | 2:특수스킬(다형성) | 3:시간경과(갱신) | 0:종료]: ");
+            String input = scanner.nextLine();
+            processInput(input);
+
+            // [2단계: 갱신 (Update)] - 1.0초 경과 시뮬레이션
+            update(1.0);
+
+            // [3단계: 렌더링 (Render)]
+            render();
+        }
+        scanner.close();
+    }
+
+    private static void processInput(String input) {
+        switch (input) {
+            case "1":
+                for (Unit u : units) u.move(5.0, 3.0);
+                break;
+            case "2":
+                for (Unit u : units) {
+                    if (u instanceof IWorker) ((IWorker) u).gatherResources();
+                    if (u instanceof IClockable) ((IClockable) u).cloak();
+                    if (u instanceof IBurrowable) ((IBurrowable) u).burrow();
+                    if (u instanceof IDetector) ((IDetector) u).detect(units);
+                }
+                break;
+            case "3":
+                System.out.println("시간이 1초 경과합니다...");
+                break;
+            case "0":
+                isRunning = false;
+                break;
+            default:
+                System.out.println("잘못된 입력입니다.");
+        }
+    }
+
+    private static void update(double deltaTime) {
+        for (Unit u : units) {
+            u.update(deltaTime); // 다형성: 저그 체력 재생, 프로토스 쉴드 재생 자동 실행
+        }
+    }
+
+    private static void render() {
+        System.out.println("--- [화면 렌더링 결과] ---");
+        for (Unit u : units) {
+            u.render();
+        }
+    }
+}`
+};
+
+const codeDisplay = document.getElementById('codeDisplay');
+const downloadButtons = document.getElementById('downloadButtons');
+codeDisplay.textContent = javaCodeModules["StarCraftGameOOP.java (통합 게임루프+OOP)"];
+
+function downloadFile(filename, content) {
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+Object.keys(javaCodeModules).forEach(key => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-all';
+    btn.textContent = '📥 ' + key + ' 다운로드';
+    btn.onclick = () => {
+        downloadFile('StarCraftGameOOP.java', javaCodeModules[key]);
+    };
+    downloadButtons.appendChild(btn);
+});
+</script>
+
+</body>
+</html>
