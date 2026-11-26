@@ -1,0 +1,5 @@
+C:\CSH\CsharpLearn\ConsoleGameEngine\ConsoleGame\obj\Debug\net9.0\ConsoleGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\CSH\CsharpLearn\ConsoleGameEngine\ConsoleGame\obj\Debug\net9.0\ConsoleGame.AssemblyInfoInputs.cache
+C:\CSH\CsharpLearn\ConsoleGameEngine\ConsoleGame\obj\Debug\net9.0\ConsoleGame.AssemblyInfo.cs
+C:\CSH\CsharpLearn\ConsoleGameEngine\ConsoleGame\obj\Debug\net9.0\ConsoleGame.csproj.CoreCompileInputs.cache
+C:\CSH\CsharpLearn\ConsoleGameEngine\ConsoleGame\obj\Debug\net9.0\ConsoleGame.sourcelink.json
