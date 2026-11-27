@@ -1,0 +1,12 @@
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\bin\Debug\net9.0\ConsoleEngine.deps.json
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\bin\Debug\net9.0\ConsoleEngine.dll
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\bin\Debug\net9.0\ConsoleEngine.pdb
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\obj\Debug\net9.0\ConsoleEngine.GeneratedMSBuildEditorConfig.editorconfig
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\obj\Debug\net9.0\ConsoleEngine.AssemblyInfoInputs.cache
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\obj\Debug\net9.0\ConsoleEngine.AssemblyInfo.cs
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\obj\Debug\net9.0\ConsoleEngine.csproj.CoreCompileInputs.cache
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\obj\Debug\net9.0\ConsoleEngine.sourcelink.json
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\obj\Debug\net9.0\ConsoleEngine.dll
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\obj\Debug\net9.0\refint\ConsoleEngine.dll
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\obj\Debug\net9.0\ConsoleEngine.pdb
+C:\CSH\CsharpLearn\ConsoleEngine (2)\standard\ConsoleEngine\obj\Debug\net9.0\ref\ConsoleEngine.dll

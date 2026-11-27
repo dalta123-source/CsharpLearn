@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ConsoleEngine;
+namespace DodgeGame
+{
+
+    // 플레이어를 dx칸 옮기는 명령. 어느 키에 묶일지는 모른다. (v0.4.0)
+    class MoveCommand : ICommand
+    {
+        private readonly DodgeGame _game;
+        private readonly int _dx;
+
+        public MoveCommand(DodgeGame game, int dx)
+        {
+            _game = game;
+            _dx = dx;
+        }
+
+        public void Execute()
+        {
+            _game.MovePlayer(_dx);
+        }
+    }
+}
